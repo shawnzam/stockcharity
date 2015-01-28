@@ -1,0 +1,47 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+<h2>Total results: {{results.length}}</h2>
+<h3 ng-show="csv">Showing all results with session ID: {{sid}}</h3>
+<h3 ng-hide="csv">Showing at most the 100 most recent results</h3>
+<form name="sidform" ng-submit="updateResults()" novalidate>
+  <div class="form-group">
+    <input ng-hide="csv && results.length" type="text"  placeholder="Enter a Session ID" ng-model="sid"
+    typeahead="sid for sid in sids | filter:$viewValue | limitTo:8" required>
+    <button ng-hide="csv && results.length" type="submit" class="btn btn-primary" ng-disabled="sidform.$invalid">Go</button>
+  </div>
+</form>
+<div class="form-group">
+  <button ng-show="csv"class="btn alert-warning" ng-click="reset()">Reset</button>
+  <button class="btn alert-danger" ng-show="csv && results.length" type="button" ng-csv="csv" csv-header="headers" filename="test.csv">Export CSV</button>
+</div>
+<div ng-hide="results.length"><h1>No Results</h1></div>
+<div ng-show="results.length">
+  <table class="table table-bordered">
+    <th>User ID</th>
+    <th>Session ID</th>
+    <th>Condition ID</th>
+    <th>View</th>
+    <th>Object Type</th>
+    <th>Response Name</th>
+    <th>Response Rating</th>
+    <th>Response Category</th>
+    <th>Clicks</th>
+    <th>Start Time</th>
+    <th>End Time</th>
+    <th ng-hide="csv">Delete</th>
+
+    <tr ng-repeat="r in results | orderBy: '-updated'">{{r}}</td>
+      <td>{{r.uid}}</td>
+      <td>{{r.sid}}</td>
+      <td>{{r.cid}}</td>
+      <td>{{r.viewType}}</td>
+      <td>{{r.objectType}}</td>
+      <td>{{r.response.choice}}</td>
+      <td>{{r.response.rating}}</td>
+      <td>{{r.response.category}}</td>
+      <td>{{r.clicks.length}}</td>
+      <td>{{r.starttime | date:'medium'}}</td>
+      <td>{{r.updated |  date:'medium'}}</td>
+      <td ng-hide="csv"><i class="glyphicon glyphicon-remove"  ng-click=deleteResult(r)></i class="delete"></td>
+    </tr>
+  </table>
+</div>

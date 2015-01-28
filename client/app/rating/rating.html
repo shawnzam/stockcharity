@@ -1,0 +1,52 @@
+<div class="well" ng-show="isAdmin()"> uid: {{uid}} | sid: {{sid}} | selected: {{selected}} {{myresults.clicks}} </div>
+
+<form ng-show="active" name="formByRating" ng-submit="submitIt()" novalidate>
+  <accordion>
+    <accordion-group ng-repeat="value in groupedByRating | toArray | orderBy: Number('rating') | reverse" close-others="{{oneAtATime}}" is-open="value.open">
+      <accordion-heading>
+        <a ng-click="clickTrack($event, value.$key)">Rating: {{value.$key}}</a>
+      </accordion-heading>
+      <div ng-repeat="c in value | orderBy: '-rating'">
+        <div class="form-group">
+          <input  ng-click="clickTrack($event, c.name)" type="radio" name="selected" ng-model="selectedItem.selected" id="{{c.name}}_{{key}}" ng-value="c" ng-required="true"> &nbsp;{{c.name}} | Category = {{c.category}} | Rating = {{c.rating}}
+        </div>
+      </div>
+    </accordion-group>
+  </accordion>
+<div ng-show="selectedItem.selected.name"><h4>You have selected {{selectedItem.selected.name}} | {{selectedItem.selected.category}} | {{selectedItem.selected.rating}}</h4>
+</div>
+<div class="form-group">
+  <button type="submit" class="btn btn-primary" ng-disabled="formByRating.$invalid">Select Item</button>
+</div>
+</form>
+<div ng-hide="active" class="well">
+  <p class="lead">You will automatically be directed to the next question. <i class="glyphicon glyphicon-forward"></i></p>
+</div>
+<!--<div ng-hide="active" class="well">-->
+  <!--<p class="lead">You Selected:-->
+    <!--<h1>{{myresults["response"].choice}}</h1>-->
+  <!--</p>-->
+  <!--<table class="table">-->
+    <!--<thead>-->
+      <!--<tr>-->
+        <!--<th>Item</th>-->
+        <!--<th>Category</th>-->
+        <!--<th>Rating</th>-->
+      <!--</tr>-->
+    <!--</thead>-->
+    <!--<tb>-->
+      <!--<tr>-->
+        <!--<td>{{myresults.response.choice}}</td>-->
+        <!--<td>{{myresults.response.category}}</td>-->
+        <!--<td>{{myresults.response.rating}}</td>-->
+      <!--</tr>-->
+    <!--</tb>-->
+  <!--</table>-->
+  <!--<h2>Category Clicks</h2>-->
+  <!--<ol>-->
+    <!--<li ng-repeat="click in clicks">{{click.click}} | time elapsed = {{(click.date - starttime) / 1000}} seconds</li>-->
+  <!--</ol>-->
+
+  <!--&lt;!&ndash;   <p class="lead">Click the next button to move on</p> &ndash;&gt;-->
+
+<!--</div>-->

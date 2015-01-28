@@ -1,0 +1,63 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+<div class="row clearfix">
+  <div class="col-md-6 column">
+<form name="mystockform" ng-submit="addStock()" novalidate>
+  <h1>Manage Stocks</h1>
+  <div class="form-group">
+    <input type="text" name="name" placeholder="Enter a Stock Name" ng-model="stock.name" ng-required="true">
+  </div>
+  <div class="form-group">
+    <input type="text" name="category" placeholder="Enter a Stock Category"
+    ng-model="stock.category" typeahead="cat for cat in cats | filter:$viewValue | limitTo:8" ng-required="true">
+  </div>
+  <div class="form-group">
+    <button type="submit" class="btn btn-primary" ng-disabled="mystockform.$invalid">Add Stock</button>
+  </div>
+</form>
+
+<table class="table table-bordered">
+  <thead>
+    <th style="width:46%">Name</th>
+    <th style="width:46%">Category</th>
+    <th style="width:8%">Remove?</th>
+  </thead>
+  <tr ng-repeat="c in stocks | orderBy : 'category' ">
+    <td style="width:49%"><span onaftersave="updateStock(c)" editable-text="c.name">{{ c.name || "none provided" }}</span></td>
+    <td style="width:49%"><span onaftersave="updateStock(c)" editable-text="c.category">{{ c.category || "none provided" }}</span>
+      <td style="width:2%" ng-click="launch(c)"><i class="glyphicon glyphicon-remove" ></i class="delete"></td>
+      </tr>
+    </table>
+  </div>
+  <div class="col-md-6 column">
+    <h1>Qualtrics codes</h1>
+    <div>
+      <h2>Include in the header source</h2>
+
+      <div class="well">
+        <code>&lt;script src="https://files-mktgit.rhcloud.com/stockcharity.js"&gt;&lt;/script&gt;
+        </code>
+      </div>
+      <h2>Code to embed stocks by category:</h2>
+      <div class="well">
+        <code>Qualtrics.SurveyEngine.addOnload(function()
+          {
+
+          Wharton.Stockcharity.showChoices("category","stock", "${e://Field/sid}", "${e://Field/uid}", "${e://Field/cid}", this );
+
+          });
+        </code>
+      </div>
+      <h2>Code to embed stocks by rating:</h2>
+      <div class="well">
+        <code>Qualtrics.SurveyEngine.addOnload(function()
+          {
+
+          Wharton.Stockcharity.showChoices("rating","stock", "${e://Field/sid}", "${e://Field/uid}", "${e://Field/cid}", this );
+
+          });
+        </code>
+      </div>
+    </div>
+  </div>
+</div>
+
